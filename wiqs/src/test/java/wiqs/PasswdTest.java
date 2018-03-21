@@ -4,7 +4,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
 /**
- * 初始化密钥的方法
+ * 初始化密钥的方法1
  * @author xxg
  */
 public class PasswdTest {
