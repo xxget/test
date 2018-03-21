@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2011/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd"
+	updateCheck="true" monitoring="autodetect" dynamicConfig="true"
+	maxBytesLocalHeap="20M"
+	name="es">
+	<diskStore path="java.io.tmpdir" />
+<!-- 
+name
+maxEnteriesLocalHeap 缓存在本地内存最大数量（旧版为maxElementsInMemory）
+maxEntrieslocalDisk  本地磁盘中缓存最大数量
+eternal              是否永久
+maxBytesLocalHeap    保存在虚拟机堆内存缓存对最大字节数，与maxEnteriesLocalHeap互斥
+maxBytesLocalDisk    与maxBytesLocalHeap类似，保存在磁盘
+timeToIdleSeconds    缓存无访问的过期时间（超过此时间无访问则过期）
+timeToLiveSeconds    缓存生存时间，0为永久有效（有访问就一直不过期）
+overflowToDisk       
+statistics           是否收集统计信息
+以下企业版用
+overflowToOffHeap    缓存使用非堆内存
+maxBytesLocalOffHeap 本地缓存使用非堆内存大小
+ -->
+	<defaultCache 
+		eternal="false"
+        timeToIdleSeconds="3600"
+        timeToLiveSeconds="0"
+        overflowToDisk="false"
+		/>
+    <cache name="passwordRetryCache"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    <cache name="authorizationCache"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    <cache name="authenticationCache"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    <cache name="shiro-activeSessionCache"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+</ehcache>

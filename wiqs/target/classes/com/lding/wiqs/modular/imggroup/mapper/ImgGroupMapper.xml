@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lding.wiqs.modular.imggroup.mapper.ImgGroupMapper">
+  <resultMap id="BaseResultMap" type="com.lding.wiqs.modular.imggroup.domain.ImgGroup">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="img_id" jdbcType="VARCHAR" property="imgId" />
+    <result column="img_group_id" jdbcType="VARCHAR" property="imgGroupId" />
+    <result column="img_type" jdbcType="CHAR" property="imgType" />
+    <result column="img_title" jdbcType="VARCHAR" property="imgTitle" />
+    <result column="img_info" jdbcType="VARCHAR" property="imgInfo" />
+    <result column="point_id" jdbcType="VARCHAR" property="pointId" />
+    <result column="img_base64" jdbcType="LONGVARCHAR" property="imgBase64" />
+    <result column="img_address" jdbcType="LONGVARCHAR" property="imgAddress" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,148 @@
+<?xml version= "1.0" encoding = "UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+  http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+  http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.1.xsd
+  http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1xsd
+  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+  http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+	<!-- 配置shiro的过滤器工厂类，id- shiroFilter要和我们在web.xml中配置的过滤器一致 --> 
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 调用我们配置的权限管理器 -->
+		<property name="securityManager" ref="securityManager" />
+		<!-- 配置我们的登录请求地址 --> 
+		<property name="loginUrl" value="/login.do" />
+		<!-- 如果您请求的资源不再您的权限范围，则跳转到/403请求地址 -->  
+		<property name="unauthorizedUrl" value="/unauthorized.do" />
+		<!-- 自定义filter配置 -->
+		<property name="filters">
+			<map>
+				<!-- 将自定义 的FormAuthenticationFilter注入shiroFilter中 -->
+				<entry key="authc" value-ref="formAuthenticationFilter" />
+			</map>
+		</property>
+		<!-- Shiro连接约束配置,即过滤链的定义 -->
+		<property name="filterChainDefinitions">
+			<value>
+				/ = anon
+				/service/* = anon
+				/index.do = anon
+				<!-- 验证码,可匿名访问 -->
+				/validatecode.do = anon
+				<!-- APP登录 -->
+				/applogin.do = anon
+				<!-- APP获取所有设施点数据 -->
+				/getpointinfo.do = anon
+				<!-- APP接受APP提交的设施坐标 -->
+				/inputapppointinfo.do = anon
+				<!-- APP根据字典类型查询数据字典信息 -->
+				/appdictlist.do = anon
+				<!-- APP查询所有用户信息生成APP通讯录 -->
+				/telapplist.do = anon
+				<!-- APP根据设施编号查询设施信息 -->
+				/appquerypointinfo.do = anon
+				<!-- 对静态资源设置匿名访问 -->
+				/resources/** = anon
+				/static/** = anon
+				/app/** = anon
+				<!-- 请求 logout.action地址,shiro去清除session -->
+				/logout.do = logout
+				<!-- /** = authc 所有url都必须认证通过才可以访问 -->
+				<!-- /** = user 表示访问该地址的用户是身份验证通过或RememberMe登录的都可以 -->
+				/** = authc
+			</value>
+		</property>
+	</bean>
+
+	<!-- 自定义认证器，加入了验证码 -->
+	<bean id="formAuthenticationFilter"
+		class="com.lding.wiqs.general.shiro.filter.CustomFormAuthenticationFilter" />
+
+	<!-- 安全管理器 (1) 三个注入 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="minglanRealm" />
+		<property name="sessionManager" ref="sessionManager" />
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="rememberMeManager" ref="rememberMeManager" />
+	</bean>
+
+	<bean id="minglanRealm" class="com.lding.wiqs.general.shiro.realm.MingLanJdbcRealm">
+		<property name="credentialsMatcher" ref="credentialsMatcher" />
+	</bean>
+
+	<!-- 凭证匹配器 （1.1.1），自定义，增加5次重试验证 -->
+	<bean id="credentialsMatcher"
+		class="com.lding.wiqs.general.shiro.matcher.RetryLimitHashedCredentialsMatcher">
+		<constructor-arg ref="cacheManager" />
+		<!-- hashAlgorithmName指定hash算法为MD5； -->
+		<property name="hashAlgorithmName" value="${password.algorithmName}" />
+		<!--hashIterations 指定散列次数为2次 -->
+		<property name="hashIterations" value="${password.hashIterations}" />
+		<!-- 指定Hash散列值使用Hex加密存储。value="false"表明hash散列值用用Base64-encoded存储。 -->
+		<property name="storedCredentialsHexEncoded" value="true" />
+	</bean>
+
+	<!-- 缓存管理器 （1.2） 一个注入springCacheManager -->
+	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManager" ref="ehcacheManager" />
+	</bean>
+
+	<!-- rememberMe管理器 (1.3) 一个注入 -->
+	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+		<!-- rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位） -->
+		<property name="cipherKey"
+			value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}" />
+		<property name="cookie" ref="rememberMeCookie" />
+	</bean>
+
+	<!-- remeberMe Cookie (1.3.1) -->
+	<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg value="rememberMe" />
+		<property name="httpOnly" value="true" />
+		<property name="maxAge" value="2592000" /><!-- 30天 -->
+	</bean>
+
+	<!-- 会话管理器 (1.4) 3个依赖注入 -->
+	<bean id="sessionManager"
+		class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="globalSessionTimeout" value="1800000" />
+		<property name="deleteInvalidSessions" value="true" />
+		<property name="sessionValidationSchedulerEnabled" value="true" />
+		<property name="sessionValidationScheduler" ref="sessionValidationScheduler" />
+		<property name="sessionDAO" ref="sessionDAO" />
+		<property name="sessionIdCookieEnabled" value="true" />
+		<property name="sessionIdCookie" ref="sessionIdCookie" />
+	</bean>
+
+	<!-- 会话Cookie模板 (1.4.1) -->
+	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg value="sid" />
+		<property name="httpOnly" value="true" />
+		<property name="maxAge" value="-1" />
+	</bean>
+
+	<!-- 会话DAO (1.4.2) 1个依赖注入 -->
+	<bean id="sessionDAO"
+		class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+		<property name="activeSessionsCacheName" value="shiro-activeSessionCache" />
+		<property name="sessionIdGenerator" ref="sessionIdGenerator" />
+	</bean>
+
+	<!-- 会话ID生成器 （1.4.2.1） -->
+	<bean id="sessionIdGenerator"
+		class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator" />
+
+	<!-- 会话验证调度器 （1.4.3）1个DI，指向自己的父节点？ -->
+	<bean id="sessionValidationScheduler"
+		class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+		<property name="sessionValidationInterval" value="1800000" />
+		<property name="sessionManager" ref="sessionManager" />
+	</bean>
+
+</beans>

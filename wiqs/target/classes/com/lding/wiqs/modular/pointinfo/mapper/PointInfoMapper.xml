@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lding.wiqs.modular.pointinfo.mapper.PointInfoMapper">
+  <resultMap id="BaseResultMap" type="com.lding.wiqs.modular.pointinfo.domain.PointInfo">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="point_id" jdbcType="CHAR" property="pointId" />
+    <result column="point_type" jdbcType="CHAR" property="pointType" />
+    <result column="lng" jdbcType="DECIMAL" property="lng" />
+    <result column="lat" jdbcType="DECIMAL" property="lat" />
+    <result column="lngs" jdbcType="VARCHAR" property="lngs" />
+    <result column="lats" jdbcType="VARCHAR" property="lats" />
+    <result column="unit_name" jdbcType="VARCHAR" property="unitName" />
+    <result column="head_name" jdbcType="VARCHAR" property="headName" />
+    <result column="head_phone" jdbcType="VARCHAR" property="headPhone" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="save_time" jdbcType="BIGINT" property="saveTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="area_id" jdbcType="VARCHAR" property="areaId" />
+    <result column="point_state" jdbcType="CHAR" property="pointState" />
+    <result column="point_name" jdbcType="VARCHAR" property="pointName" />
+    <result column="point_info" jdbcType="LONGVARCHAR" property="pointInfo" />
+    <result column="img_base64" jdbcType="LONGVARCHAR" property="imgBase64" />
+  </resultMap>
+</mapper>
