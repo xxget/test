@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lding.wiqs.modular.reportformsinfo.mapper.ReportFormsInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.lding.wiqs.modular.reportformsinfo.domain.ReportFormsInfo" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="rf_id" property="rfId" jdbcType="VARCHAR" />
+    <result column="rf_name" property="rfName" jdbcType="VARCHAR" />
+    <result column="problem_group_id" property="problemGroupId" jdbcType="VARCHAR" />
+    <result column="make_id" property="makeId" jdbcType="VARCHAR" />
+    <result column="make_time" property="makeTime" jdbcType="VARCHAR" />
+    <result column="examine_user_id" property="examineUserId" jdbcType="VARCHAR" />
+    <result column="examine_time" property="examineTime" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

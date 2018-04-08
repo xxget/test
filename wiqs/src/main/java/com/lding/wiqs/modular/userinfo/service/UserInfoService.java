@@ -2,7 +2,6 @@ package com.lding.wiqs.modular.userinfo.service;
 
 import java.util.List;
 
-import com.lding.wiqs.app.login.domain.NetAppUser;
 import com.lding.wiqs.general.business.service.IService;
 import com.lding.wiqs.modular.userinfo.domain.UserInfo;
 import com.lding.wiqs.modular.userrole.domain.UserRole;

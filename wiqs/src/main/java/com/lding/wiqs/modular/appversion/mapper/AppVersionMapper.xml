@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lding.wiqs.modular.appversion.mapper.AppVersionMapper">
+  <resultMap id="BaseResultMap" type="com.lding.wiqs.modular.appversion.domain.AppVersion">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="version_code" jdbcType="VARCHAR" property="versionCode" />
+    <result column="version_info" jdbcType="VARCHAR" property="versionInfo" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="version_data" jdbcType="VARCHAR" property="versionData" />
+    <result column="versioin_state" jdbcType="CHAR" property="versioinState" />
+    <result column="app_url" jdbcType="LONGVARCHAR" property="appUrl" />
+  </resultMap>
+</mapper>

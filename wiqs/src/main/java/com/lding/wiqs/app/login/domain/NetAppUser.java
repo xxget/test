@@ -2,6 +2,7 @@ package com.lding.wiqs.app.login.domain;
 
 import java.util.List;
 
+import com.lding.wiqs.modular.appversion.domain.AppVersion;
 import com.lding.wiqs.modular.org.domain.Org;
 import com.lding.wiqs.modular.permission.domain.Permission;
 import com.lding.wiqs.modular.userinfo.domain.UserInfo;
@@ -19,6 +20,10 @@ public class NetAppUser {
 	 * 组织机构信息
 	 */
 	private Org org;
+	/**
+	 * app版本信息
+	 */
+	private AppVersion appVersion;
 	/**
 	 * 用户的资源权限列表
 	 */
@@ -125,4 +130,23 @@ public class NetAppUser {
 	public void setPermissionList(List<Permission> permissionList) {
 		this.permissionList = permissionList;
 	}
+
+	/**
+	 * <p>Title: getAppVersion</p>  
+	 * <p>Description: 获取app版本信息</p>  
+	 * @return
+	 */
+	public AppVersion getAppVersion() {
+		return appVersion;
+	}
+
+	/**
+	 * <p>Title: setAppVersion</p>  
+	 * <p>Description: 设置app版本信息</p>  
+	 * @param appVersion
+	 */
+	public void setAppVersion(AppVersion appVersion) {
+		this.appVersion = appVersion;
+	}
+	
 }

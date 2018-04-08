@@ -31,6 +31,8 @@ import com.lding.wiqs.general.web.validate.AbstractValidateCode;
 import com.lding.wiqs.general.web.validate.GifValidateCode;
 import com.lding.wiqs.general.web.vo.TreeVo;
 import com.lding.wiqs.general.web.vo.UserVo;
+import com.lding.wiqs.modular.appversion.domain.AppVersion;
+import com.lding.wiqs.modular.appversion.service.AppVersionService;
 import com.lding.wiqs.modular.dict.domain.Dict;
 import com.lding.wiqs.modular.dict.service.DictService;
 import com.lding.wiqs.modular.imggroup.service.ImgGroupService;
@@ -76,6 +78,9 @@ public class IndexController extends BaseController {
 
 	@Autowired
 	private PointInfoService pointInfoService;
+	
+	@Autowired
+	private AppVersionService appVersionService;
 
 	private String mainpage = "mainpage";
 
@@ -216,7 +221,17 @@ public class IndexController extends BaseController {
 
 		List<Permission> permissionList = permissionService.findPermissionListByUserId(userInfo.getUserId());
 		netAppUser.setPermissionList(permissionList);
-
+		
+		//查询状态为1的版本信息
+		AppVersion appVersion = new AppVersion();
+		List<AppVersion> avList = new ArrayList();
+		appVersion.setVersioinState("1");
+		avList = appVersionService.readByEqualNotNull(appVersion);
+		for(AppVersion a : avList) {
+			appVersion = a;
+		}
+		netAppUser.setAppVersion(appVersion);
+		
 		return netAppUser;
 	}
 
@@ -234,13 +249,9 @@ public class IndexController extends BaseController {
 	@RequestMapping("/telapplist")
 	@ResponseBody
 	public String telListInfo() {
-		logger.info("232");
 		List<UserInfo> userInfoList = userInfoService.readAllRows();
-		logger.info("234-userInfoList" + JSON.toJSONString(userInfoList));
 		List<UserInfo> userList = new ArrayList();
-		logger.info("236");
 		UserInfo userInfo = new UserInfo();
-		logger.info("238-userList" + JSON.toJSONString(userList));
 		for (UserInfo u : userInfoList) {
 			userInfo.setUserId(u.getUserId());
 			userInfo.setIcon(u.getIcon());
@@ -248,9 +259,7 @@ public class IndexController extends BaseController {
 			userInfo.setRealName(u.getRealName());
 			userList.add(userInfo);
 		}
-		logger.info("246 - " + JSON.toJSONString(userList));
 		String userJson = JSON.toJSONString(userList);
-		logger.info("APP login..." + userJson);
 		return userJson;
 	}
 
@@ -304,27 +313,19 @@ public class IndexController extends BaseController {
 	 *            用户编号
 	 * @return
 	 */
-	// @RequestMapping(value = "/inputapppointinfo", produces =
-	// "text/html;charset=UTF-8")
 	@RequestMapping("/inputapppointinfo")
-	//@RequestMapping(value = "/inputapppointinfo", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String inputAppPointInfo(String pointType, String pointName, String pointInfo, String lng, String lat,
 			String unitName, String headName, String headPhone, String note, String userId, Integer hiddenImgSign,
 			HttpServletRequest request) {
-		logger.info("进入接受APP提交的设施坐标方法312");
-		logger.info("###############################进来了" + hiddenImgSign);
 		String hiddenImgUrls = "";
 		if (hiddenImgSign > 0) {
-			logger.info("进入循环319");
 			// 转型为MultipartHttpRequest：
 			MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
 			// 获取上传的文件列表
 			Iterator fns = mRequest.getFileNames();
-			logger.info("324获取上传的文件列表" + fns);
 			while (fns.hasNext()) {
 				String s = (String) fns.next();
-				logger.info("327=========================" + s);
 				String saveRelUrl = MultipartFileUploadUtil.saveImg(mRequest.getFile(s), true);
 				if (hiddenImgUrls.equals("")) {
 					hiddenImgUrls = saveRelUrl;
@@ -337,36 +338,20 @@ public class IndexController extends BaseController {
 
 		// 获取数据
 		PointInfo p = new PointInfo();
-		logger.info("进入315: " + pointType);
 		p.setPointType(pointType);
-		logger.info("进入317: " + pointInfo);
 		p.setPointInfo(pointInfo);
-		logger.info("进入319:  " + lng);
-		// p.setLng(new BigDecimal(lng));
-		logger.info("进入321: " + lat);
-		// p.setLat(new BigDecimal(lat));
-		logger.info("进入323: " + lng + "" + Base64Util.getBase64(lng));
 		p.setLngs(Base64Util.getBase64(lng));
-		logger.info("进入325: " + lat + "" + Base64Util.getBase64(lat));
 		p.setLats(Base64Util.getBase64(lat));
-		logger.info("进入327: " + unitName);
 		p.setUnitName(unitName);
-		logger.info("进入329: " + headName);
 		p.setHeadName(headName);
-		logger.info("进入331: " + headPhone);
 		p.setHeadPhone(headPhone);
-		logger.info("进入335: " + pointName);
 		p.setPointName(pointName);
-		logger.info("进入337: " + note);
 		p.setNote(note);
-		logger.info("进入339");
 		p.setImgBase64(hiddenImgUrls);
 		// 获取主键uuid
 		p.setPointId(SessionUtils.getUUID());
-		logger.info("进入342:  " + userId);
 		p.setUserId(userId);
 		p.setSaveTime(new Date().getTime() / 1000);
-		logger.info("344初始化对象p获取对象的值 : " + JSON.toJSONString(p));
 
 		int ret = 0;
 		String msg = "";

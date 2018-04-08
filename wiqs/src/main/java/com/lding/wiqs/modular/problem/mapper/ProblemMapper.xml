@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lding.wiqs.modular.problem.mapper.ProblemMapper" >
+  <resultMap id="BaseResultMap" type="com.lding.wiqs.modular.problem.domain.Problem" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="problem_id" property="problemId" jdbcType="VARCHAR" />
+    <result column="problem_group_id" property="problemGroupId" jdbcType="VARCHAR" />
+    <result column="problem_type" property="problemType" jdbcType="CHAR" />
+    <result column="point_id" property="pointId" jdbcType="VARCHAR" />
+    <result column="report_time" property="reportTime" jdbcType="VARCHAR" />
+    <result column="report_user" property="reportUser" jdbcType="VARCHAR" />
+    <result column="is_inside" property="isInside" jdbcType="CHAR" />
+    <result column="is_done" property="isDone" jdbcType="CHAR" />
+    <result column="done_time" property="doneTime" jdbcType="VARCHAR" />
+    <result column="solve_user" property="solveUser" jdbcType="VARCHAR" />
+    <result column="desc_info" property="descInfo" jdbcType="LONGVARCHAR" />
+    <result column="solve_mode" property="solveMode" jdbcType="LONGVARCHAR" />
+  </resultMap>
+</mapper>

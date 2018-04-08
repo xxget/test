@@ -37,6 +37,9 @@ public abstract class BaseService<T> implements IService<T> {
         return mapper.selectByPrimaryKey(key);
     }
 
+    /**
+     * 插入一条数据
+     */
     public int insert(T entity) {
         return mapper.insert(entity);
     }

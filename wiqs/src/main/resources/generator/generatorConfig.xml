@@ -50,7 +50,12 @@
 		<table tableName="r_point_info" domainObjectName="PointInfo" />
 		<table tableName="c_permission" domainObjectName="Permission" />
 		<table tableName="r_point_info" domainObjectName="PointInfo" />
-		-->
 		<table tableName="r_point_info" domainObjectName="PointInfo" />
+		<table tableName="c_app_version" domainObjectName="AppVersion" />
+		<table tableName="p_type_desc" domainObjectName="TypeDesc" />
+		<table tableName="p_problem" domainObjectName="Problem" />
+		<table tableName="p_report_forms_info" domainObjectName="ReportFormsInfo" />
+		-->
+		<table tableName="p_type_desc" domainObjectName="TypeDesc" />
 	</context>
 </generatorConfiguration>

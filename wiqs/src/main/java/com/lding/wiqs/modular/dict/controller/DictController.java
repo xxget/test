@@ -26,9 +26,19 @@ public class DictController extends BaseController {
 	private DictService dictService;
 
 	private String pagelist = "dict/dictPage";
-	
+
 	DataUtils dataUtils = new DataUtils();
 
+	/**
+	 * <p>
+	 * Title: manage
+	 * </p>
+	 * <p>
+	 * Description:进入数据字典页面
+	 * </p>
+	 * 
+	 * @return
+	 */
 	@RequiresPermissions("base:dict:read")
 	@RequestMapping("/manage")
 	public String manage() {
@@ -37,6 +47,7 @@ public class DictController extends BaseController {
 
 	/**
 	 * 根据条件分页查询数据字典信息
+	 * 
 	 * @param dict
 	 * @param page
 	 * @param rows
@@ -119,6 +130,8 @@ public class DictController extends BaseController {
 	}
 
 	/**
+	 * 根据数据字典类型查询该类型的所有数据字典信息
+	 * 
 	 * @param type
 	 * @return
 	 */
@@ -127,12 +140,19 @@ public class DictController extends BaseController {
 	public List<Dict> readByType(String dictType) {
 		return dictService.readByType(dictType);
 	}
-	
+
 	/**
-	 * <p>Title: queryDictValue</p>  
-	 * <p>Description: 根据字典的类型和key查询字典的值</p>  
-	 * @param dictType	字典类型
-	 * @param dictDkey	字典值
+	 * <p>
+	 * Title: queryDictValue
+	 * </p>
+	 * <p>
+	 * Description: 根据字典的类型和key查询字典的值
+	 * </p>
+	 * 
+	 * @param dictType
+	 *            字典类型
+	 * @param dictDkey
+	 *            字典值
 	 * @return
 	 */
 	public String queryDictValue(String dictType, String dictDkey) {
@@ -142,7 +162,7 @@ public class DictController extends BaseController {
 		dict.setDictDkey(dictDkey);
 		List<Dict> dictList = new ArrayList();
 		dictList = dictService.readByEqualNotNull(dict);
-		for(Dict d : dictList) {
+		for (Dict d : dictList) {
 			dictValue = d.getDictValue();
 		}
 		return dictValue;
